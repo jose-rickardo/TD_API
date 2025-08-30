@@ -1,16 +1,15 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: API Ping
+  title: Ping API
   version: 1.0.0
-  description: Une API simple pour tester un endpoint ping.
-
+  description: A simple API with a single ping endpoint.
 paths:
   /ping:
     get:
-      summary: Vérifie si l'API répond
+      summary: Ping the server
       responses:
         '200':
-          description: Réponse avec "pong"
+          description: Successful response
           content:
             text/plain:
               schema:
