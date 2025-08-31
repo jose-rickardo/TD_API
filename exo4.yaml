@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: Product Search API
+  version: 1.0.0
+  description: API pour rechercher des produits avec paramètres réutilisables.
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Lait bio"
+        expiration_datetime:
+          type: string
+          format: date-time
+          example: "2025-12-31T23:59:59Z"
+        price:
+          type: number
+          format: float
+          example: 2.99
+      required:
+        - name
+        - expiration_datetime
+        - price
+
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      description: Nombre maximum de produits à retourner
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+      example: 10
+    queryParam:
+      name: q
+      in: query
+      description: Terme de recherche pour filtrer les produits
+      required: false
+      schema:
+        type: string
+      example: "lait"
+
+paths:
+  /products:
+    get:
+      summary: Rechercher des produits
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/queryParam'
+      responses:
+        '200':
+          description: Liste des produits correspondant aux critères
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                multipleProducts:
+                  summary: Résultat avec plusieurs produits
+                  value:
+                    - name: "Lait bio"
+                      expiration_datetime: "2025-12-31T23:59:59Z"
+                      price: 2.99
+                    - name: "Fromage de chèvre"
+                      expiration_datetime: "2025-11-30T23:59:59Z"
+                      price: 5.50
+                emptyList:
+                  summary: Résultat avec une liste vide
+                  value: []
