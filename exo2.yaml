@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: User Management API
+  version: 1.0.0
+  description: API pour gérer les utilisateurs avec pagination.
+
+paths:
+  /users:
+    get:
+      summary: Récupérer la liste des utilisateurs avec pagination
+      parameters:
+        - name: page
+          in: query
+          description: Numéro de la page à récupérer (doit être ≥ 1)
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: size
+          in: query
+          description: Nombre d'utilisateurs par page (doit être ≥ 1)
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+      responses:
+        '200':
+          description: Liste des utilisateurs retrouvés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Alice
+                    email:
+                      type: string
+                      example: alice@example.com
+              example:
+                - id: 1
+                  name: "Alice"
+                  email: "alice@example.com"
+        '400':
+          description: Mauvais types de paramètres fournis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Bad types for provided query parameters"
